@@ -1,25 +1,42 @@
-def custom_generate_chat_prompt(user_input, state, **kwargs):
+params = {
+    'use_sys_message': True,
+    'use_ctx': True,
+}
+
+
+def get_comment_block(lines, marker):
+    found_marker = False
+    result = ''
+    for line in lines:
+        if line.strip() == marker:
+            found_marker = True
+            continue
+        if found_marker:
+            if not line.startswith('#'):
+                break
+            else:
+                result += line[2:] + '\n'
+
+    return result.rstrip('\n')
+
+
+def state_modifier(state):
     if 'grammar_string' in state and state['grammar_string']:
         lines = state['grammar_string'].split('\n')
-        found_marker = False
-        system_message = ''
 
-        for line in lines:
-            if line.strip() == '# grammar_sys_msg:':
-                found_marker = True
-                continue
-            if found_marker:
-                if not line.startswith('#'):
-                    break
-                else:
-                    system_message += line[2:] + '\n'
+        custom_system_message_result = get_comment_block(lines, '# grammar_sys_msg:') if params.get('use_sys_message', False) else None
+        context_result = get_comment_block(lines, '# grammar_ctx:') if params.get('use_ctx', False) else None
 
-        system_message = system_message.rstrip('\n')
-
-        if system_message:
-            if 'custom_system_message' in state:
-                state['custom_system_message'] += '\n\n' + system_message
+        if custom_system_message_result:
+            if ('custom_system_message' in state) and state['custom_system_message']:
+                state['custom_system_message'] += '\n\n' + custom_system_message_result + '\n'
             else:
-                state['custom_system_message'] = system_message
+                state['custom_system_message'] = custom_system_message_result + '\n'
 
-    return
+        if context_result:
+            if ('context' in state) and state['context']:
+                state['context'] += '\n\n' + context_result + '\n'
+            else:
+                state['context'] = context_result + '\n'
+
+    return state
