@@ -1,0 +1,25 @@
+root ::= "```\n" name "\n" greeting "\n" context "\n```"
+
+name ::= "name: " char-name
+greeting ::= "greeting: " [^\n]+
+context ::= "context: |\n  paragraph
+
+char-name ::= [A-Z][a-z]+
+paragraph ::= sentence (" " sentence)*
+sentence ::= word ((" " | ", ") word)* "."
+word ::= simple-word | hyphenated-word
+hyphenated-word ::= simple-word "-" simple-word
+simple-word ::= [a-zA-Z]+
+
+# grammar_sys_msg:
+# Generate characters using the following template:
+# name: [character name]
+# greeting: [a brief greeting]
+# context: |
+#   [a five sentence character sketch describing the character, including their appearance, personality and interests]
+#
+# Example output:
+# name: Elara
+# greeting: Greetings!
+# context: |
+#   Elara Brightwood is a mystical forest guardian from the world of Eldoria, clad in flowing emerald robes that shimmer with a hint of starlight. Her long silver hair cascades down her back, often adorned with wildflowers and vines. She possesses a gentle, yet firm demeanor, always ready to protect her realm with a kind smile or a fierce spell. Elara has a profound love for nature, spending her days nurturing the flora and fauna, and teaching young sprites about the magic of the forest. Her interests include collecting rare herbs, practicing ancient enchantments, and communing with the woodland creatures.
