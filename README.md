@@ -57,3 +57,5 @@ As you can see the results are quite different with the provided instructions.
 
 # Usage
 Just make a grammar file and add a continuous block of comments starting with `# grammar_sys_msg:` like the example above. Again, make sure to add a blank line at the end.
+- `# grammar_sys_msg:` appends the instructions to the system message, which is used by chat-instruct mode.
+- `# grammar_ctx:` appends the instructions to the context, which is used by chat and chat-instruct mode.
