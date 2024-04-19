@@ -2,7 +2,7 @@ root ::= "```\n" name "\n" greeting "\n" context "\n```"
 
 name ::= "name: " char-name
 greeting ::= "greeting: " [^\n]+
-context ::= "context: |\n  paragraph
+context ::= "context: |\n  " paragraph
 
 char-name ::= [A-Z][a-z]+
 paragraph ::= sentence (" " sentence)*
